@@ -1,0 +1,25 @@
+{
+  "name": "chronodose_twitter",
+  "version": "1.0.0",
+  "main": "chronobot.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node chronobot.js"
+  },
+  "keywords": [],
+  "author": "plhery (https://twitter.com/plhery)",
+  "license": "apache-2.0",
+  "description": "",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dayjs": "^1.10.4",
+    "dotenv": "^9.0.2",
+    "staticmaps": "^1.4.4",
+    "twitter-api-v2": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^15.0.2",
+    "@types/staticmaps": "^1.4.2",
+    "typescript": "^4.2.4"
+  }
+}
