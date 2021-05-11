@@ -51,7 +51,7 @@ async function checkDepartment(department: number) {
 
   console.log(`fetching db ${department}...`);
   const { data }: { data: viteMaDoseData } =
-    await axios.get(`https://vitemadose.gitlab.io/vitemadose/${department}.json`);
+    await axios.get(`https://vitemadose.gitlab.io/vitemadose/${addZero(department)}.json`);
   console.log(`fetched db ${department}`);
 
   const promises = data.centres_disponibles
@@ -120,6 +120,8 @@ async function checkDepartment(department: number) {
   await Promise.all(promises)
     .catch(err => console.error(err));
 }
+
+function addZero(department: number) {return (department < 10 ? `0${department}` : department)}
 
 function checkDepartments(departments: number[]) {
   return Promise.all(
