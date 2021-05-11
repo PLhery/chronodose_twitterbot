@@ -8,9 +8,11 @@ It leverages https://vitemadose.covidtracker.fr/ to find new available appointme
 
 Create a twitter app, and fill .env with the twitter credentials.
 
-You can also tweak some additional available options there.
+To generate twitter account tokens for a twitter app, you can use this script https://gist.github.com/PLhery/4c82273e351540be327908c44698b322
 
-Then you can
+You can also tweak some additional available options (departments to track..) there.
+
+Then you can either use docker or node 14 + npm to start the bot:
 ```bash
 npm install
 npm run build
