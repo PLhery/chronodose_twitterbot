@@ -27,7 +27,7 @@ curl https://raw.githubusercontent.com/PLhery/chronodose_twitterbot/main/docker-
 ### Using docker
 
 ```bash
-docker run -d plhery/chronobot -e DEPARTMENTS_TO_CHECK=75,92,93,94 -e APP_KEY=XXXX -e APP_SECRET=XXXX -e ACCESS_TOKEN=XXXX -e ACCESS_SECRET=XXXX
+docker run -d PLhery/chronodose_twitterbot -e DEPARTMENTS_TO_CHECK=75,92,93,94 -e APP_KEY=XXXX -e APP_SECRET=XXXX -e ACCESS_TOKEN=XXXX -e ACCESS_SECRET=XXXX
 ```
 
 ### Using node / pm2
