@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  chronobot:
+#    build: .
+    image: plhery/chronodose_twitter:latest
+    restart: always
+    environment:
+      DEPARTMENTS_TO_CHECK: 75,92,93,94
+      APP_KEY: XXXX
+      APP_SECRET: XXXX
+      ACCESS_TOKEN: XXXX
+      ACCESS_SECRET: XXXX
+#      CHECK_INTERVAL_SEC: 60
+#      MIN_DOSES: 1
+#      TIMEZONE: Europe/Paris
