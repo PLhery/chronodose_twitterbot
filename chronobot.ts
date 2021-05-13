@@ -6,19 +6,29 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import dayjs from 'dayjs';
-import calendar from 'dayjs/plugin/calendar'
-dayjs.extend(calendar)
+import calendar from 'dayjs/plugin/calendar';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+dayjs.extend(calendar);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const twitterClient = new TwitterApi({
   appKey: process.env.APP_KEY!,
   appSecret: process.env.APP_SECRET!,
   accessToken: process.env.ACCESS_TOKEN!,
   accessSecret: process.env.ACCESS_SECRET!,
-})
+});
+
+if (!process.env.DEPARTMENTS_TO_CHECK) {
+  console.error('please set the DEPARTMENTS_TO_CHECK env variable');
+  process.exit(0);
+}
 
 const DEPARTMENTS_TO_CHECK = process.env.DEPARTMENTS_TO_CHECK!.split(',').map(Number);
 const CHECK_INTERVAL_SEC = Number(process.env.CHECK_INTERVAL_SEC) || 60; // check every X seconds
 const MIN_DOSES = Number(process.env.MIN_DOSES) || 0; // don't tweet if less than MIN_DOSES are available, because it's probably already too late
+const TIMEZONE = process.env.TIMEZONE || 'Europe/Paris';
 
 // partial data
 interface viteMaDoseData {
@@ -78,11 +88,15 @@ async function checkDepartment(department: number) {
       }
       alreadyTweeted.add(id);
 
-      const calendarDate = dayjs(centre.prochain_rdv).calendar(dayjs(), {
-        sameDay: '[aujourd\'hui à] H:mm', // The same day ( Today at 2:30 AM )
-        nextDay: '[demain à] H:mm', // The next day ( Tomorrow at 2:30 AM )
-        sameElse: 'le DD/MM/YYYY à H:mm' // Everything else ( 17/10/2011 )
-      })
+      const calendarDate = dayjs(centre.prochain_rdv)
+        .tz(TIMEZONE)
+        .calendar(dayjs(),
+          {
+              sameDay: '[aujourd\'hui à] H:mm',
+              nextDay: '[demain à] H:mm',
+              sameElse: 'le DD/MM/YYYY à H:mm',
+          }
+      );
 
       const intro = (nbDoses == 1) ?
         `${nbDoses} dose est disponible ${calendarDate}` :
