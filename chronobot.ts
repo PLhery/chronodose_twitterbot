@@ -13,6 +13,8 @@ dayjs.extend(calendar);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+import { getNumberOfAvailableSlots } from './doctolib-scrapper';
+
 const twitterClient = new TwitterApi({
   appKey: process.env.APP_KEY!,
   appSecret: process.env.APP_SECRET!,
@@ -36,6 +38,7 @@ interface viteMaDoseData {
   centres_disponibles: Array<{
     nom: string;
     url: string;
+    plateforme: string;
     location: {
       longitude: number;
       latitude: number;
@@ -88,6 +91,15 @@ async function checkDepartment(department: number) {
         return;
       }
       alreadyTweeted.add(id);
+
+      // On doctolib, double-check the slot is still available, bypassing the cache
+      if (centre.plateforme === 'Doctolib') {
+        const actualNbSlots = await getNumberOfAvailableSlots(centre.url);
+        console.log(`${actualNbSlots} 1st dose slots found on doctolib.fr`);
+        if (actualNbSlots === 0) {
+          return;
+        }
+      }
 
       const calendarDate = dayjs(centre.prochain_rdv)
         .tz(TIMEZONE)
