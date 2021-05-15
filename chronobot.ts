@@ -93,9 +93,9 @@ async function checkDepartment(department: number) {
         .tz(TIMEZONE)
         .calendar(dayjs(),
           {
-              sameDay: '[aujourd\'hui à] H:mm',
-              nextDay: '[demain à] H:mm',
-              sameElse: 'le DD/MM/YYYY à H:mm',
+              sameDay: '[Aujourd\'hui à] H:mm',
+              nextDay: '[Demain à] H:mm',
+              sameElse: 'Le DD/MM/YYYY à H:mm',
           }
       );
 
