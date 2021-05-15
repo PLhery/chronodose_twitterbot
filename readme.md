@@ -6,7 +6,7 @@ It leverages https://vitemadose.covidtracker.fr/ to find new available appointme
 
 ## Installation
 
-Create a twitter app on http://apps.twitter.com/, and create a twitter account for your bot.
+Create a twitter app on https://developer.twitter.com/en/apps , and create a twitter account for your bot.
 
 To generate twitter account tokens for a twitter app, you can use this script https://gist.github.com/PLhery/4c82273e351540be327908c44698b322
 
