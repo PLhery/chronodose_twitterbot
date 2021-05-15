@@ -108,7 +108,8 @@ async function checkDepartment(department: number) {
         `🗓 ${calendarDate}\n` +
         `🏥 ${centre.nom} (${centre.vaccine_type})\n` +
         `▶ ${centre.url}\n` +
-        `📍 ${centre.metadata.address}`;
+        `📍 ${centre.metadata.address}`
+          .slice(0, 280); // max tweet length = 280
 
       console.log(message);
 
