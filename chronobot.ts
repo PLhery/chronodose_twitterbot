@@ -27,7 +27,8 @@ if (!process.env.DEPARTMENTS_TO_CHECK) {
 
 const DEPARTMENTS_TO_CHECK = process.env.DEPARTMENTS_TO_CHECK!.split(',').map(Number);
 const CHECK_INTERVAL_SEC = Number(process.env.CHECK_INTERVAL_SEC) || 60; // check every X seconds
-const MIN_DOSES = Number(process.env.MIN_DOSES) || 0; // don't tweet if less than MIN_DOSES are available, because it's probably already too late
+// don't tweet if less than MIN_SLOTS are available, because it's probably already too late
+const MIN_SLOTS = Number(process.env.MIN_SLOTS) || Number(process.env.MIN_DOSES) || 0;
 const TIMEZONE = process.env.TIMEZONE || 'Europe/Paris';
 
 // partial data
@@ -72,17 +73,17 @@ async function checkDepartment(department: number) {
     )
     .map(async (centre) => {
       // count the number of doses
-      const nbDoses = centre
+      const nbSlots = centre
         .appointment_schedules
         .filter(schedule => schedule.name === 'chronodose')
         .reduce((nb, schedule) => nb + schedule.total, 0);
 
-      if (nbDoses < MIN_DOSES) {
+      if (nbSlots < MIN_SLOTS) {
         return;
       }
 
       // don't tweet twice the same info
-      const id = `${centre.url} - ${centre.prochain_rdv} - ${nbDoses}`
+      const id = `${centre.url} - ${centre.prochain_rdv} - ${nbSlots}`
       if (alreadyTweeted.has(id)) {
         return;
       }
@@ -98,21 +99,21 @@ async function checkDepartment(department: number) {
           }
       );
 
-      const intro = (nbDoses == 1) ?
-        `${nbDoses} dose est disponible ${calendarDate}` :
-        `${nbDoses} doses sont disponibles ${calendarDate}`;
+      const intro = (nbSlots === 1) ?
+        `💉 Un créneau disponible` :
+        `💉 ${nbSlots} créneaux disponibles`;
 
       const message =
         `${intro}\n` +
-        `à ${centre.nom} (${centre.vaccine_type})\n` +
-        `${centre.url}\n` +
-        `${centre.metadata.address}`;
+        `🗓 ${calendarDate}\n` +
+        `🏥 ${centre.nom} (${centre.vaccine_type})\n` +
+        `▶ ${centre.url}\n` +
+        `📍 ${centre.metadata.address}`;
 
       console.log(message);
 
-      console.log('generating the map...');
-
       // generate the map image before tweeting...
+      console.log('generating the map...');
       const map = new StaticMaps({
         width: 600,
         height: 400

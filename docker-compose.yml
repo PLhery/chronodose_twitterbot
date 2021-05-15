@@ -11,5 +11,5 @@ services:
       ACCESS_TOKEN: XXXX
       ACCESS_SECRET: XXXX
 #      CHECK_INTERVAL_SEC: 60
-#      MIN_DOSES: 1
+#      MIN_SLOTS: 1
 #      TIMEZONE: Europe/Paris
