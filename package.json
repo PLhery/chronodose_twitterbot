@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/chronobot.js",
-    "login": "node dist/login.js",
+    "tw-login": "node dist/login.js",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "keywords": [
