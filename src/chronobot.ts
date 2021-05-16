@@ -38,6 +38,7 @@ if (!process.env.DEPARTMENTS_TO_CHECK) {
 // don't tweet if less than MIN_SLOTS are available, because it's probably already too late
 const MIN_SLOTS = Number(process.env.MIN_SLOTS) || Number(process.env.MIN_DOSES) || 0;
 const TIMEZONE = process.env.TIMEZONE || 'Europe/Paris';
+const GID_BLACKLIST = process.env.GID_BLACKLIST ? process.env.GID_BLACKLIST.split(',') : [];
 
 // avoid tweeting twice the same message (using a specified ID)
 const alreadyTweeted = new Set<string>();
@@ -72,6 +73,7 @@ async function tweetDeptData(department: number) {
     console.log(`${emojiSet.paws} fetched db ${department}`);
 
     const promises = data.centres_disponibles
+        .filter((center) => !GID_BLACKLIST.includes(center.gid))
         .filter((center) =>
             center.appointment_schedules.some((schedule) => schedule.name === 'chronodose' && schedule.total > 0)
         )
@@ -94,10 +96,25 @@ async function tweetDeptData(department: number) {
 
             // On doctolib, double-check the slot is still available, bypassing the cache
             if (center.plateforme === 'Doctolib') {
-                const actualNbSlots = await getNumberOfAvailableSlots(center.url);
-                console.log(`${actualNbSlots} slots found on doctolib.fr`);
-                if (actualNbSlots === 0) {
-                    return;
+                try {
+                    const actualNbSlots = await getNumberOfAvailableSlots(center.url);
+                    console.log(`${actualNbSlots} slots found on doctolib.fr`);
+                    if (actualNbSlots === 0) {
+                        return;
+                    }
+                } catch (error) {
+                    if (error.response) {
+                        // axios - doctolib http error
+                        console.error(error.response.data);
+                        console.error(error.response.status);
+                        console.error(error.response.headers);
+                    } else if (error.request) {
+                        // axios - http request error
+                        console.error(error.request);
+                    } else {
+                        // other - ex. wrong URL format
+                        console.error('Error', error.message);
+                    }
                 }
             }
 
