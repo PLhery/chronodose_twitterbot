@@ -7,7 +7,7 @@ It leverages https://vitemadose.covidtracker.fr/ to find new available appointme
 ## Installation
 
 Create a Twitter app on https://developer.twitter.com/en/apps , and create a Twitter account for your bot.
-To generate Twitter account tokens for a Twitter app, you can use the command `npm run login` or `yarn login` to directly have it in your console.
+To generate Twitter account tokens for a Twitter app, you can use the command `npm run tw-login` or `yarn tw-login` to directly have it in your console.
 
 Then to set the tokens required, you need to copy the env example file :
 `copy .env.example .env && vim .env` (you can use nano instead of vim)

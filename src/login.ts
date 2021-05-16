@@ -1,6 +1,10 @@
 import { TwitterApi } from 'twitter-api-v2';
 import rl from 'readline';
 
+// Dotenv
+import dotenv from 'dotenv';
+dotenv.config();
+
 const APP_INFOS = {
     appKey: process.env.APP_KEY!,
     appSecret: process.env.APP_SECRET!,
