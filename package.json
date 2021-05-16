@@ -4,7 +4,7 @@
   "main": "chronobot.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/chronobot.js",
+    "start": "node dist/server.js",
     "tw-login": "node dist/login.js",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
@@ -18,11 +18,15 @@
   "license": "apache-2.0",
   "description": "Twitter bot for Chronodoses of COVID19",
   "dependencies": {
+    "@types/express": "^4.17.11",
+    "@types/twitter-text": "^3.1.0",
     "axios": "^0.21.1",
     "dayjs": "^1.10.4",
     "dotenv": "^9.0.2",
+    "express": "^4.17.1",
     "staticmaps": "^1.4.4",
-    "twitter-api-v2": "^1.1.0"
+    "twitter-api-v2": "^1.1.0",
+    "twitter-text": "^3.1.0"
   },
   "devDependencies": {
     "@types/node": "^15.0.2",

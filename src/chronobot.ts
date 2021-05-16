@@ -3,8 +3,9 @@ import axios from 'axios';
 import TwitterApi from 'twitter-api-v2';
 import StaticMaps from 'staticmaps';
 
-import emojiSet from './emojis';
-import { getNumberOfAvailableSlots } from './doctolib-scrapper';
+import emojiSet from '~/emojis';
+import { getNumberOfAvailableSlots } from '~/doctolib-scrapper';
+import { generateValidTweet, generateMessage } from '~/twitter/message';
 
 // Dotenv
 import dotenv from 'dotenv';
@@ -34,24 +35,12 @@ if (!process.env.DEPARTMENTS_TO_CHECK) {
     process.exit(0);
 }
 
-const CHECK_INTERVAL_SEC = Number(process.env.CHECK_INTERVAL_SEC) || 60; // check every X seconds
 // don't tweet if less than MIN_SLOTS are available, because it's probably already too late
 const MIN_SLOTS = Number(process.env.MIN_SLOTS) || Number(process.env.MIN_DOSES) || 0;
 const TIMEZONE = process.env.TIMEZONE || 'Europe/Paris';
 
 // avoid tweeting twice the same message (using a specified ID)
 const alreadyTweeted = new Set<string>();
-
-function generateMessage(center: CenterData, intro: string, calendarDate: string) {
-    const message =
-        `${intro}\n` +
-        `${emojiSet.calendar} ${calendarDate}\n` +
-        `${emojiSet.hospital} ${center.nom} (${center.vaccine_type})\n` +
-        `${emojiSet.playButton} ${center.url}\n` +
-        `${emojiSet.pin} ${center.metadata.address}`;
-    console.log(message);
-    return message.slice(0, 280);
-}
 
 function generateMapImg(center: CenterData) {
     const map = new StaticMaps({
@@ -116,6 +105,7 @@ async function tweetDeptData(department: number) {
                 `${emojiSet.syringe} ` + (nbSlots === 1 ? `1 créneau disponible` : `${nbSlots} créneaux disponibles`);
             const calendarDate = getCalendarDate(center);
             const message = generateMessage(center, intro, calendarDate);
+            const tweet = generateValidTweet(message);
             const map = generateMapImg(center);
 
             // generate the map image before tweeting...
@@ -126,7 +116,7 @@ async function tweetDeptData(department: number) {
             console.log(`${emojiSet.incEnvelope} uploading the media...`);
             const mediaId = await twitterClient.v1.uploadMedia(await map.image.buffer(), { type: 'png' });
             console.log(`${emojiSet.bird} tweeting...`);
-            await twitterClient.v1.tweet(message, { media_ids: mediaId });
+            await twitterClient.v1.tweet(tweet ? tweet : '', { media_ids: mediaId });
         });
     await Promise.all(promises).catch((err) => console.error(err));
 }
@@ -135,10 +125,6 @@ function addZero(department: number) {
     return department < 10 ? `0${department}` : department;
 }
 
-function checkDepartments(departments: number[]) {
+export function checkDepartments(departments: number[]): unknown {
     return Promise.all(departments.map((department) => tweetDeptData(department)));
 }
-
-const DEPARTMENTS_TO_CHECK = process.env.DEPARTMENTS_TO_CHECK!.split(',').map(Number);
-checkDepartments(DEPARTMENTS_TO_CHECK);
-setInterval(() => checkDepartments(DEPARTMENTS_TO_CHECK), CHECK_INTERVAL_SEC * 1000);
