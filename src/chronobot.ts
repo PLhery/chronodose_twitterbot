@@ -12,7 +12,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Types
-import { viteMaDoseData, CenterData } from './types/viteMaDoseApi';
+import type { ViteMaDoseCenterList, CenterData } from './types/vite-ma-dose-api';
 
 // Dayjs
 import dayjs from 'dayjs';
@@ -49,7 +49,7 @@ function generateMapImg(center: CenterData) {
     });
     map.addMarker({
         coord: [center.location.longitude, center.location.latitude],
-        img: 'marker.png',
+        img: `${__dirname}/../marker.png`,
         height: 40,
         width: 40,
     });
@@ -66,7 +66,7 @@ function getCalendarDate(center: CenterData) {
 
 async function tweetDeptData(department: number) {
     console.log(`${emojiSet.dog} fetching db ${department}...`);
-    const { data }: { data: viteMaDoseData } = await axios.get(
+    const { data }: { data: ViteMaDoseCenterList } = await axios.get(
         `https://vitemadose.gitlab.io/vitemadose/${addZero(department)}.json`
     );
     console.log(`${emojiSet.paws} fetched db ${department}`);

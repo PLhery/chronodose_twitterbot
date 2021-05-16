@@ -6,7 +6,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "tw-login": "node dist/login.js",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+    "test": "eslint 'src/**/*.ts'",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}' --fix"
   },
   "keywords": [
     "twitter",

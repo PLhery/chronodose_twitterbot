@@ -1,3 +1,12 @@
+// https://vitemadose.gitlab.io/vitemadose/${addZero(department)}.json response
+export interface ViteMaDoseCenterList {
+    centres_disponibles: Array<CenterData>;
+    centres_indisponibles: Array<CenterData>;
+    last_scrap: unknown;
+    last_updated: Date;
+    version: number;
+}
+
 export interface CenterData {
     internal_id: string;
     gid: string;
@@ -32,12 +41,4 @@ export interface CenterData {
     last_scan_with_availabilities: Date;
     erreur: unknown;
     departement: string;
-}
-
-export interface viteMaDoseData {
-    centres_disponibles: Array<CenterData>;
-    centres_indisponibles: Array<CenterData>;
-    last_scrap: unknown;
-    last_updated: Date;
-    version: number;
 }
