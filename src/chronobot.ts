@@ -38,6 +38,7 @@ const CHECK_INTERVAL_SEC = Number(process.env.CHECK_INTERVAL_SEC) || 60; // chec
 // don't tweet if less than MIN_SLOTS are available, because it's probably already too late
 const MIN_SLOTS = Number(process.env.MIN_SLOTS) || Number(process.env.MIN_DOSES) || 0;
 const TIMEZONE = process.env.TIMEZONE || 'Europe/Paris';
+const GID_BLACKLIST = process.env.GID_BLACKLIST ? process.env.GID_BLACKLIST.split(',') : [];
 
 // avoid tweeting twice the same message (using a specified ID)
 const alreadyTweeted = new Set<string>();
@@ -83,6 +84,7 @@ async function tweetDeptData(department: number) {
     console.log(`${emojiSet.paws} fetched db ${department}`);
 
     const promises = data.centres_disponibles
+        .filter((center) => !GID_BLACKLIST.includes(center.gid))
         .filter((center) =>
             center.appointment_schedules.some((schedule) => schedule.name === 'chronodose' && schedule.total > 0)
         )
