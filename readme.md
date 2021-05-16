@@ -1,4 +1,4 @@
-# Chronodose twitter bot
+# Chronodose Twitter bot
 
 This repository hosts https://twitter.com/chronodoseparis source code
 
@@ -6,9 +6,16 @@ It leverages https://vitemadose.covidtracker.fr/ to find new available appointme
 
 ## Installation
 
-Create a twitter app on https://developer.twitter.com/en/apps , and create a twitter account for your bot.
+Create a Twitter app on https://developer.twitter.com/en/apps , and create a Twitter account for your bot.
+To generate Twitter account tokens for a Twitter app, you can use the command `npm run login` or `yarn login` to directly have it in your console.
 
-To generate twitter account tokens for a twitter app, you can use this script https://gist.github.com/PLhery/4c82273e351540be327908c44698b322
+Then to set the tokens required, you need to copy the env example file :
+`copy .env.example .env && vim .env` (you can use nano instead of vim)
+
+## Build
+
+The build files are converted from Typescript to JavaScript files in a folder `dist` that is created for you.
+If there is any problem on this step, you can create the folder by yourself with `mkdir build` at the root level.
 
 ### Using docker-compose
 
@@ -20,7 +27,7 @@ cd chronobot
 curl https://raw.githubusercontent.com/PLhery/chronodose_twitterbot/main/docker-compose.yml -o docker-compose.yml
 ```
 
-- customize the ENVIRONMENT section in the file `vim docker-compose.yml`
+- customize the ENVIRONMENT section in the file `vim docker-compose.yml` (or nano)
 
 - run `docker-compose up -d`
 - To update the bot, run `docker-compose pull && docker-compose up -d`
@@ -34,7 +41,7 @@ docker run -d plhery/chronodose_twitter -e DEPARTMENTS_TO_CHECK=75,92,93,94 -e A
 ### Using node / pm2
 
 - clone the repository
-- fill the .env file with your twitter credentials / tweak some options
+- fill the .env file with your Twitter credentials / tweak some options
 - either use docker to install and start the bot
 
 ```bash
