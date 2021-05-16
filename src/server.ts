@@ -1,5 +1,5 @@
 import express from 'express';
-import { checkDepartments } from './chronobot';
+import { checkDepartments } from '~/chronobot';
 const app = express();
 const port = 3000;
 

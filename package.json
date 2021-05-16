@@ -4,7 +4,8 @@
   "main": "chronobot.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/server.js",
+    "dev": "ts-node -r tsconfig-paths/register ./src/server.ts",
     "tw-login": "node dist/login.js",
     "test": "eslint 'src/**/*.ts'",
     "lint": "eslint 'src/**/*.{js,ts,tsx}' --fix"
@@ -26,6 +27,8 @@
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "staticmaps": "^1.4.4",
+    "ts-node": "^9.1.1",
+    "tsconfig-paths": "^3.9.0",
     "twitter-api-v2": "^1.1.0",
     "twitter-text": "^3.1.0"
   },

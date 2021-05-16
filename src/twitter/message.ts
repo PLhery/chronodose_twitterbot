@@ -1,5 +1,5 @@
 import emojiSet from '~/emojis';
-import { CenterData } from '~/types/viteMaDoseApi';
+import { CenterData } from '~/types/vite-ma-dose-api';
 import twttr from 'twitter-text';
 
 export function generateMessage(center: CenterData, intro: string, calendarDate: string): string {
@@ -20,10 +20,13 @@ export function generateValidTweet(message: string): string | null {
     // Check if weightedLength is <280
     if (parsed.weightedLength > 279) {
         const trimmedMsg = message.substring(parsed.validRangeStart, parsed.validRangeEnd);
+        console.log('🚀 ~ file: message.ts ~ line 23 ~ generateValidTweet ~ trimmedMsg', trimmedMsg);
         // testing if message is now valid
         if (twttr.parseTweet(trimmedMsg).valid) {
             validTweet = trimmedMsg;
         }
+    } else {
+        validTweet = message;
     }
 
     return validTweet;
