@@ -15,7 +15,6 @@ export function generateMessage(center: CenterData, intro: string, calendarDate:
 export function generateValidTweet(message: string): string | null {
     let validTweet = null;
     const parsed = twttr.parseTweet(message);
-    console.log('🚀 ~ file: chronobot.ts ~ line 61 ~ generateValidTweet ~ parsed', parsed);
 
     // Check if weightedLength is <280
     if (parsed.weightedLength > 279) {
