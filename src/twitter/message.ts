@@ -19,7 +19,6 @@ export function generateValidTweet(message: string): string | null {
     // Check if weightedLength is <280
     if (parsed.weightedLength > 279) {
         const trimmedMsg = message.substring(parsed.validRangeStart, parsed.validRangeEnd);
-        console.log('🚀 ~ file: message.ts ~ line 23 ~ generateValidTweet ~ trimmedMsg', trimmedMsg);
         // testing if message is now valid
         if (twttr.parseTweet(trimmedMsg).valid) {
             validTweet = trimmedMsg;

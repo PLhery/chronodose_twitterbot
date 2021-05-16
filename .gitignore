@@ -39,3 +39,5 @@ Thumbs.db
 
 # ignore yarn.lock
 yarn.lock
+
+/.vscode
