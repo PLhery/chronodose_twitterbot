@@ -1,43 +1,17 @@
 import axios from 'axios';
+import type { CenterBookingInfo } from "~/types/doctolib-api";
 
-interface CenterInfo {
-    profile: {
-        id: number;
-        name_with_title_and_determiner: string; // "Centre de vaccination covid-19 - Centre XXX"
-        // other info
-    };
-    specialities: Array<{
-        id: number; // 5494
-        name: string; // "Vaccination COVID-19"
-        kind: string; // "subspeciality"
-    }>;
-    visit_motives: Array<{
-        id: number;
-        name: string; // "1re injection vaccin COVID-19 (Pfizer-BioNTech)"
-        // other info
-    }>;
-    agendas: Array<{
-        id: number;
-        booking_disabled: boolean;
-        booking_temporary_disabled: boolean;
-        landline_number: string;
-        anonymous: boolean;
-        organization_id: number;
-        visit_motive_ids: number[];
-        // other info
-    }>;
-}
-
-async function getCenterInfo(url: string): Promise<CenterInfo | null> {
+async function getCenterInfo(url: string): Promise<CenterBookingInfo | null> {
     let centerName: string;
     try {
         centerName = new URL(url).pathname.split('/')[3];
     } catch {
+        console.error('This doctolib URL is not valid', url);
         return null;
     }
 
     const { data } = await axios.get(`https://www.doctolib.fr/booking/${centerName}.json`);
-    return data.data as CenterInfo;
+    return data.data as CenterBookingInfo;
 }
 
 /**
