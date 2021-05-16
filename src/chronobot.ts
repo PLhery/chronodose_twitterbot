@@ -107,10 +107,25 @@ async function tweetDeptData(department: number) {
 
             // On doctolib, double-check the slot is still available, bypassing the cache
             if (center.plateforme === 'Doctolib') {
-                const actualNbSlots = await getNumberOfAvailableSlots(center.url);
-                console.log(`${actualNbSlots} slots found on doctolib.fr`);
-                if (actualNbSlots === 0) {
-                    return;
+                try {
+                    const actualNbSlots = await getNumberOfAvailableSlots(center.url);
+                    console.log(`${actualNbSlots} slots found on doctolib.fr`);
+                    if (actualNbSlots === 0) {
+                        return;
+                    }
+                } catch (error) {
+                    if (error.response) {
+                        // axios - doctolib http error
+                        console.error(error.response.data);
+                        console.error(error.response.status);
+                        console.error(error.response.headers);
+                    } else if (error.request) {
+                        // axios - http request error
+                        console.error(error.request);
+                    } else {
+                        // other - ex. wrong URL format
+                        console.error('Error', error.message);
+                    }
                 }
             }
 
