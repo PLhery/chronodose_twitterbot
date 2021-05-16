@@ -4,6 +4,9 @@ import TwitterApi from 'twitter-api-v2'
 import StaticMaps from 'staticmaps'
 
 import emojiSet from './emojis'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore-next-line
+import { getNumberOfAvailableSlots } from './doctolib-scrapper'
 
 // Dotenv
 import dotenv from 'dotenv'
@@ -101,6 +104,15 @@ async function tweetDeptData(department: number) {
                 return
             }
             alreadyTweeted.add(id)
+
+            // On doctolib, double-check the slot is still available, bypassing the cache
+            if (center.plateforme === 'Doctolib') {
+                const actualNbSlots = await getNumberOfAvailableSlots(center.url)
+                console.log(`${actualNbSlots} 1st dose slots found on doctolib.fr`)
+                if (actualNbSlots === 0) {
+                    return
+                }
+            }
 
             const intro =
                 `${emojiSet.syringe} ` + (nbSlots === 1 ? `1 créneau disponible` : `${nbSlots} créneaux disponibles`)
