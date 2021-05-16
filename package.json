@@ -1,9 +1,10 @@
 {
   "name": "chronodose_twitter",
   "version": "1.0.0",
-  "main": "chronobot.js",
+  "main": "server.js",
   "scripts": {
     "build": "tsc",
+    "postinstall": "npm run build",
     "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/server.js",
     "dev": "ts-node -r tsconfig-paths/register ./src/server.ts",
     "tw-login": "node dist/login.js",
