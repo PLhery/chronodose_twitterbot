@@ -20,9 +20,7 @@ async function getCenterInfo(url: string): Promise<CenterBookingInfo | null> {
  */
 export async function getNumberOfAvailableSlots(url: string): Promise<number> {
     const centerInfo = await getCenterInfo(url);
-
-    if (!centerInfo) {
-        // URL issue
+    if (!centerInfo) { // URL issue
         return 0;
     }
 
@@ -30,13 +28,13 @@ export async function getNumberOfAvailableSlots(url: string): Promise<number> {
         .filter((motive) => motive.name.match(/1 ?e?è?re? (injection|dose)/gi))
         .map((motive) => motive.id)
         .join('-');
-
     const agendaIdsStr = centerInfo.agendas.map((agenda) => agenda.id).join('-');
+    const secondsSinceTheHour = Math.floor(Date.now()/1000)%3600; // will be used to bypasss the cache
 
     const bookingUrl =
         `https://www.doctolib.fr/availabilities.json?` +
         `start_date=${new Date().toISOString().substring(0, 10)}` +
-        `&visit_motive_ids=${motiveIdsStr}-1234` + // -1234 to bypass the cache
+        `&visit_motive_ids=${motiveIdsStr}-${secondsSinceTheHour}` + // -[a number < 2.8e6] to bypass the cache
         `&agenda_ids=${agendaIdsStr}` +
         `&insurance_sector=public&practice_ids=180683&destroy_temporary=true&limit=2`; // limit=2 => 2 days of slots
 
