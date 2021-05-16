@@ -14,4 +14,4 @@ RUN npm run build
 
 COPY . .
 
-CMD [ "node", "chronobot.js" ]
+CMD [ "node", "dist/chronobot.js" ]

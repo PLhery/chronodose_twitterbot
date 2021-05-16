@@ -4,12 +4,18 @@
   "main": "chronobot.js",
   "scripts": {
     "build": "tsc",
-    "start": "node chronobot.js"
+    "start": "node dist/chronobot.js",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
-  "keywords": [],
+  "keywords": [
+    "twitter",
+    "bot",
+    "chronodose",
+    "COVID19"
+  ],
   "author": "plhery (https://twitter.com/plhery)",
   "license": "apache-2.0",
-  "description": "",
+  "description": "Twitter bot for Chronodoses of COVID19",
   "dependencies": {
     "axios": "^0.21.1",
     "dayjs": "^1.10.4",
@@ -20,6 +26,12 @@
   "devDependencies": {
     "@types/node": "^15.0.2",
     "@types/staticmaps": "^1.4.2",
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.23.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.0",
     "typescript": "^4.2.4"
   }
 }

@@ -1,6 +1,6 @@
 # Chronodose twitter bot
 
-This repository hosts https://twitter.com/chronodoseparis source code 
+This repository hosts https://twitter.com/chronodoseparis source code
 
 It leverages https://vitemadose.covidtracker.fr/ to find new available appointments in the "chronodose" section
 
@@ -19,6 +19,7 @@ mkdir chronobot
 cd chronobot
 curl https://raw.githubusercontent.com/PLhery/chronodose_twitterbot/main/docker-compose.yml -o docker-compose.yml
 ```
+
 - customize the ENVIRONMENT section in the file `vim docker-compose.yml`
 
 - run `docker-compose up -d`
@@ -35,21 +36,27 @@ docker run -d plhery/chronodose_twitter -e DEPARTMENTS_TO_CHECK=75,92,93,94 -e A
 - clone the repository
 - fill the .env file with your twitter credentials / tweak some options
 - either use docker to install and start the bot
+
 ```bash
 docker build . -t plhery/chronobot
 docker run -d plhery/chronobot
 ```
+
 - Or use node 14 + npm to start the bot:
+
 ```bash
 npm install
 npm run build
-npm start 
+npm start
 ```
+
 - To start in the background, for instance you can use pm2:
+
 ```bash
 npm install -g pm2
 pm2 start chronobot
 ```
 
 ## License
+
 [Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/)
