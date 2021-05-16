@@ -99,7 +99,7 @@ async function tweetDeptData(department: number) {
             }
 
             // don't tweet twice the same info
-            const id = `${center.url} - ${center.prochain_rdv} - ${nbSlots}`;
+            const id = `${center.url} - ${center.prochain_rdv}`;
             if (alreadyTweeted.has(id)) {
                 return;
             }
