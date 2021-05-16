@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { CenterBookingInfo } from "~/types/doctolib-api";
+import type { CenterBookingInfo } from '~/types/doctolib-api';
 
 async function getCenterInfo(url: string): Promise<CenterBookingInfo | null> {
     let centerName: string;
@@ -20,7 +20,8 @@ async function getCenterInfo(url: string): Promise<CenterBookingInfo | null> {
  */
 export async function getNumberOfAvailableSlots(url: string): Promise<number> {
     const centerInfo = await getCenterInfo(url);
-    if (!centerInfo) { // URL issue
+    if (!centerInfo) {
+        // URL issue
         return 0;
     }
 
@@ -29,7 +30,7 @@ export async function getNumberOfAvailableSlots(url: string): Promise<number> {
         .map((motive) => motive.id)
         .join('-');
     const agendaIdsStr = centerInfo.agendas.map((agenda) => agenda.id).join('-');
-    const secondsSinceTheHour = Math.floor(Date.now()/1000)%3600; // will be used to bypasss the cache
+    const secondsSinceTheHour = Math.floor(Date.now() / 1000) % 3600; // will be used to bypasss the cache
 
     const bookingUrl =
         `https://www.doctolib.fr/availabilities.json?` +
