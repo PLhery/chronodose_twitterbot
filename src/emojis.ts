@@ -9,6 +9,6 @@ const emojiSet = {
     bird: String.fromCodePoint(0x1f426),
     incEnvelope: String.fromCodePoint(0x1f4e8),
     map: String.fromCodePoint(0x1f5fa),
-}
+};
 
-export default emojiSet
+export default emojiSet;
