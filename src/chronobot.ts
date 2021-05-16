@@ -52,7 +52,7 @@ function generateMessage(center: CenterData, intro: string, calendarDate: string
         `${emojiSet.playButton} ${center.url}\n` +
         `${emojiSet.pin} ${center.metadata.address}`
     console.log(message)
-    return message
+    return message.slice(0, 280)
 }
 
 function generateMapImg(center: CenterData) {
@@ -71,9 +71,9 @@ function generateMapImg(center: CenterData) {
 
 function getCalendarDate(center: CenterData) {
     return dayjs(center.prochain_rdv).tz(TIMEZONE).calendar(dayjs(), {
-        sameDay: "[aujourd'hui à] H:mm",
-        nextDay: '[demain à] H:mm',
-        sameElse: 'le DD/MM/YYYY à H:mm',
+        sameDay: "[Aujourd'hui à] H:mm",
+        nextDay: '[Demain à] H:mm',
+        sameElse: 'Le DD/MM/YYYY à H:mm',
     })
 }
 
