@@ -60,7 +60,7 @@ function generateMapImg(center: CenterData) {
     });
     map.addMarker({
         coord: [center.location.longitude, center.location.latitude],
-        img: 'marker.png',
+        img: `${__dirname}/../marker.png`,
         height: 40,
         width: 40,
     });
