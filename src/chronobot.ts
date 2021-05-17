@@ -43,9 +43,9 @@ const GID_BLACKLIST = process.env.GID_BLACKLIST ? process.env.GID_BLACKLIST.spli
 // avoid tweeting twice the same message (using a specified ID)
 const alreadyTweeted = new Set<string>();
 
-function generateMessage(center: CenterData, intro: string, calendarDate: string) {
+function generateMessage(center: CenterData, nbSlots: number, calendarDate: string): string {
     const message =
-        `${intro}\n` +
+        `${emojiSet.syringe} ${nbSlots === 1 ? `Un créneau disponible` : `${nbSlots} créneaux disponibles`}\n` +
         `${emojiSet.calendar} ${calendarDate}\n` +
         `${emojiSet.hospital} ${center.nom} (${center.vaccine_type})\n` +
         `${emojiSet.playButton} ${center.url}\n` +
@@ -55,6 +55,20 @@ function generateMessage(center: CenterData, intro: string, calendarDate: string
     // URLs are shortened to a 28chars url, and the tweet can be 280chars long
     // so if the URL is 30 chars, our unshortened message can be 280 + 2 = 282 chars long
     const maxMessageLength = 280 + center.url.length - 28;
+
+    // If we have to truncate but the address contains a ',', first try to shorten the address
+    if ([...message].length > maxMessageLength && center.metadata.address.includes(',')) {
+        // clone the center with a different address, removing the part before the first ','
+        // (usually the format is NUMBER STREETNAME, ZIPCODE CITY)
+        const centerWithSmallerAddress = {
+            ...center,
+            metadata: {
+                ...center.metadata,
+                address: center.metadata.address.split(',').slice(1).join(',').trim(),
+            },
+        };
+        return generateMessage(centerWithSmallerAddress, nbSlots, calendarDate);
+    }
 
     // ex. simple emojis have a length 2 in js, hence the [...message] which splits correctly chars
     return [...message].slice(0, maxMessageLength).join('');
@@ -135,10 +149,8 @@ async function tweetDeptData(department: number) {
                 }
             }
 
-            const intro =
-                `${emojiSet.syringe} ` + (nbSlots === 1 ? `1 créneau disponible` : `${nbSlots} créneaux disponibles`);
             const calendarDate = getCalendarDate(center);
-            const message = generateMessage(center, intro, calendarDate);
+            const message = generateMessage(center, nbSlots, calendarDate);
             const map = generateMapImg(center);
 
             // generate the map image before tweeting...
