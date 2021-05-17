@@ -51,7 +51,13 @@ function generateMessage(center: CenterData, intro: string, calendarDate: string
         `${emojiSet.playButton} ${center.url}\n` +
         `${emojiSet.pin} ${center.metadata.address}`;
     console.log(message);
-    return message.slice(0, 280);
+
+    // URLs are shortened to a 28chars url, and the tweet can be 280chars long
+    // so if the URL is 30 chars, our unshortened message can be 280 + 2 = 282 chars long
+    const maxMessageLength = 280 + center.url.length - 28;
+
+    // ex. simple emojis have a length 2 in js, hence the [...message] which splits correctly chars
+    return [...message].slice(0, maxMessageLength).join('');
 }
 
 function generateMapImg(center: CenterData) {
