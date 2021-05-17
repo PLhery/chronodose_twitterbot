@@ -21,12 +21,11 @@ export async function getNumberOfAvailableSlots(url: string): Promise<number> {
         .map((motive) => motive.id)
         .join('-');
     const agendaIdsStr = centerInfo.agendas.map((agenda) => agenda.id).join('-');
-    const secondsSinceTheHour = Math.floor(Date.now() / 1000) % 3600; // will be used to bypasss the cache
 
     const bookingUrl =
-        `https://www.doctolib.fr/availabilities.json?` +
+        `https://www.doctolib.fr/availabilities?` +
         `start_date=${new Date().toISOString().substring(0, 10)}` +
-        `&visit_motive_ids=${motiveIdsStr}-${secondsSinceTheHour}` + // -[a number < 2.8e6] to bypass the cache
+        `&visit_motive_ids=${motiveIdsStr}` +
         `&agenda_ids=${agendaIdsStr}` +
         `&insurance_sector=public&practice_ids=180683&destroy_temporary=true&limit=2`; // limit=2 => 2 days of slots
 
