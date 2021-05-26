@@ -22,6 +22,9 @@ dayjs.extend(calendar);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+//utils
+import { addZero } from './utils';
+
 const twitterClient = new TwitterApi({
     appKey: process.env.APP_KEY!,
     appSecret: process.env.APP_SECRET!,
@@ -164,10 +167,6 @@ async function tweetDeptData(department: number) {
             await twitterClient.v1.tweet(message, { media_ids: mediaId });
         });
     await Promise.all(promises).catch((err) => console.error(err));
-}
-
-function addZero(department: number) {
-    return department < 10 ? `0${department}` : department;
 }
 
 function checkDepartments(departments: number[]) {
