@@ -2,7 +2,15 @@
 
 This repository hosts https://twitter.com/chronodoseparis source code
 
-It leverages https://vitemadose.covidtracker.fr/ to find new available appointments in the "chronodose" section
+In May, only slots still available <24h in advance were available for 18-55 year olds.
+
+This bot leveraged https://vitemadose.covidtracker.fr/ to find new available appointments in the "chronodose" section, and double-checked on doctolib their availability, trying to bypass their cache.
+
+It was later used by many twitter accounts in other areas (@ChronodoseTLS @Chronodose54 @ChronodoseNord @Chronodose13 @Chronodose33 @Chronodose_35 @Chronodose5962 @chronodoseclf @Chronodose87 @chronodose29 @Chronodose44)
+
+
+![image](https://user-images.githubusercontent.com/4018426/124389781-012ab980-dce9-11eb-86ea-63aa8744da84.png)
+
 
 ## Installation
 
